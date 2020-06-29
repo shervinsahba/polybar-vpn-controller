@@ -35,7 +35,7 @@ format-background = ${color.mb}
 Please review the installation, and modify as needed prior to install.
 
 ```
-git clone www.github.com/shervinsahba/polybar-module-mullvad.git
+git clone https://github.com/shervinsahba/polybar-module-mullvad.git
 cd polybar-module-mullvad
 cp fonts/* $HOME/.local/share/fonts/
 cp mullvad_module.sh $HOME/.config/polybar/scripts/
