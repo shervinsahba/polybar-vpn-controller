@@ -46,7 +46,7 @@ COUNTRIES=("Albania (al)" "Australia (au)" "Austria (at)" "Belgium (be)" "Brazil
 COUNTRY_CODES=("al" "au" "at" "be" "br" "bg" "ca" "cz" "dk" "fi" "fr" "de" "gr" "hk" "hu" "ie" "il" "it" "jp" "lv" "lu" "md" "nl" "nz" "no" "pl" "ro" "rs" "sg" "es" "se" "ch" "gb" "ae" "us")
 
 # Concatenate arrays
-VPN_CODES=$VPN_LOCATIONS
+VPN_CODES=("${VPN_LOCATIONS[@]}")
 VPN_CODES+=("${COUNTRY_CODES[@]}")
 VPN_LOCATIONS+=("${COUNTRIES[@]}")
 
@@ -102,6 +102,7 @@ mullvad_location_menu() {
 
 	    case "$MENU" in
 	    	*connect) mullvad_toggle_connection; break;;
+			*"${VPN_LOCATIONS[0]}") mullvad relay set location ${VPN_CODES[0]};;
 			*"${VPN_LOCATIONS[1]}") mullvad relay set location ${VPN_CODES[1]};;
 			*"${VPN_LOCATIONS[2]}") mullvad relay set location ${VPN_CODES[2]};;
 			*"${VPN_LOCATIONS[3]}") mullvad relay set location ${VPN_CODES[3]};;
@@ -144,7 +145,6 @@ mullvad_location_menu() {
 			*"${VPN_LOCATIONS[40]}") mullvad relay set location ${VPN_CODES[40]};;
 			*"${VPN_LOCATIONS[41]}") mullvad relay set location ${VPN_CODES[41]};;
 			*"${VPN_LOCATIONS[42]}") mullvad relay set location ${VPN_CODES[42]};;
-			*"${VPN_LOCATIONS[43]}") mullvad relay set location ${VPN_CODES[43]};;
 	    esac
 
 	    if echo $(mullvad status) | grep -q "Connected"; then
