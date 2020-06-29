@@ -1,10 +1,10 @@
 # polybar-module-mullvad
-polybar module for mullvad vpn 
-by Shervin S. (shervin@tuta.io)
 
-The mullvad_module reports mullvad's status in one of three states: `[<ip_address> | connecting... | No VPN ]`, where the IP address is your public IP given after connecting to Mullvad. With optional dependencies, `<ip_address>` will be replaced with `<city> <country>`. You can also connect and disconnect via left-clicks, or with rofi, right-click to access a menu and select between your favorite locations, set in VPN_LOCATIONS, as well as 35 countries.
+This polybar module reports mullvad's status in one of three states: `[<ip_address> | connecting... | No VPN ]`, where the IP address is your public IP given after connecting to Mullvad. With optional dependencies, `<ip_address>` will be replaced with `<city> <country>`. You can also connect and disconnect via left-clicks, or with rofi, right-click to access a menu and select between your favorite locations, set in VPN_LOCATIONS, as well as 35 countries.
 
 ![](mullvad-demo.gif)
+
+###### (The polybar theme seen in the gif was modified from polybar-5 provided by [Aditya Shakya](https://github.com/adi1090x/polybar-themes) and originally designed by [Benedikt Vollmerhaus](https://gitlab.com/BVollmerhaus))
 
 ## dependencies:
 - `mullvad-vpn` (or `mullvad-vpn-cli`)
