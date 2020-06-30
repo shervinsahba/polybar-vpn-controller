@@ -11,7 +11,7 @@ This polybar module reports the VPN's status in one of three states: `[<ip_addre
 ## dependencies (assuming Mullvad VPN):
 - `mullvad-vpn` (or `mullvad-vpn-cli`)
 
-Mullvad is available in the [AUR](https://aur.archlinux.org/packages/mullvad-vpn/). 
+Mullvad is available in the [AUR](https://aur.archlinux.org/packages/mullvad-vpn/). If you're using another VPN, review your API and set appropriate `VPNCOMMAND` variables in `vpn_module.sh`.
 
 ## optional dependencies: 
 - `rofi` 				  - allows menu-based control of the VPN
