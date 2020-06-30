@@ -40,6 +40,11 @@ VPNCOMMAND_DISCONNECT="mullvad disconnect"
 VPNCOMMAND_STATUS="mullvad status"
 VPNCOMMAND_RELAY_SET_LOCATION="mullvad relay set location"
 
+# TODO maybe change these for VPNs beside Mullvad
+VPN_STATUS="$($VPNCOMMAND_STATUS | cut -d' ' -f3)"	# Connected/Connecting/... 
+CONNECTED=Connected   
+CONNECTING=Connecting 
+
 # Set your 8 favorite vpn locations here. These will
 # be passed to your VPN as `$VPNCOMMAND_RELAY_SET_LOCATION <input>`.
 VPN_LOCATIONS=("us sea" "us chi" "us nyc" "us" "jp" "au" "fr" "br")
@@ -53,23 +58,20 @@ rofi_theme="solarized_alternate"
 rofi_location="-location 5 -xoffset -50 -yoffset -50"
 rofi_menu_name="Mullvad VPN"
 
-## @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-## Main Script
-
 # These are country codes taken from `mullvad relay list`. 
 # They ought to connect to Mullvad's choice of VPN in the region.
 COUNTRIES=("Albania (al)" "Australia (au)" "Austria (at)" "Belgium (be)" "Brazil (br)" "Bulgaria (bg)" "Canada (ca)" "Czech Republic (cz)" "Denmark (dk)" "Finland (fi)" "France (fr)" "Germany (de)" "Greece (gr)" "Hong Kong (hk)" "Hungary (hu)" "Ireland (ie)" "Israel (il)" "Italy (it)" "Japan (jp)" "Latvia (lv)" "Luxembourg (lu)" "Moldova (md)" "Netherlands (nl)" "New Zealand (nz)" "Norway (no)" "Poland (pl)" "Romania (ro)" "Serbia (rs)" "Singapore (sg)" "Spain (es)" "Sweden (se)" "Switzerland (ch)" "UK (gb)" "United Arab Emirates (ae)" "USA (us)")
 COUNTRY_CODES=("al" "au" "at" "be" "br" "bg" "ca" "cz" "dk" "fi" "fr" "de" "gr" "hk" "hu" "ie" "il" "it" "jp" "lv" "lu" "md" "nl" "nz" "no" "pl" "ro" "rs" "sg" "es" "se" "ch" "gb" "ae" "us")
+
+
+## @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+## Main Script
 
 # Concatenate arrays
 VPN_CODES=("${VPN_LOCATIONS[@]}")
 VPN_CODES+=("${COUNTRY_CODES[@]}")
 VPN_LOCATIONS+=("${COUNTRIES[@]}")
 
-# Grab VPN status
-VPN_STATUS="$($VPNCOMMAND_STATUS | cut -d' ' -f3)"
-CONNECTED=Connected   # TODO maybe change "Connected" for other VPNs
-CONNECTING=Connecting # TODO maybe change "Connecting" for other VPNs
 
 vpn_report() {
 # continually reports connection status
