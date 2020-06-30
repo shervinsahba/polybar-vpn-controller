@@ -50,23 +50,23 @@ VPN_CODES=("${VPN_LOCATIONS[@]}")
 VPN_CODES+=("${COUNTRY_CODES[@]}")
 VPN_LOCATIONS+=("${COUNTRIES[@]}")
 
+MULLVAD_STATUS=$(mullvad status | cut -d' ' -f3)
 
 mullvad_report(){
 # continually reports connection status
 
-	mullvad_status=$(mullvad status)
-	ip_address=$(echo $mullvad_status | grep -oe [0-9].*: | cut -f1 -d:)
+	ip_address=$(mullvad status | cut -d' ' -f7 | cut -d':' -f1)
 
-	if echo $mullvad_status | grep -q 'Connected'; then
+	if [ "$MULLVAD_STATUS" == "Connected"  ]; then
 		if hash geoiplookup 2>/dev/null; then
-			country=$(geoiplookup $ip_address | grep "GeoIP Country" | cut -d' ' -f4 | cut -d, -f1)
-			city=$(geoiplookup $ip_address | grep "GeoIP City" | cut -d, -f5 | sed 's/ //')
+			country=$(geoiplookup "$ip_address" | head -n1 | cut -c24-25)
+			city=$(geoiplookup "$ip_address" | cut -d',' -f5 | sed -n '2{p;q}' | sed 's/ //')
 			echo "$city $country"
 		else
 			echo "$ip_address"
 		fi
-	elif echo $mullvad_status | grep -q 'Connecting'; then
-		echo "connecting..."
+	elif [ "$MULLVAD_STATUS" == "Connecting" ]; then
+		echo "Connecting..."
 	else
 		echo "No VPN"
 	fi
@@ -75,7 +75,7 @@ mullvad_report(){
 
 mullvad_toggle_connection() {
 # connects or disconnects mullvad
-    if echo $(mullvad status) | grep -q "Connected"; then
+	if [ "$MULLVAD_STATUS" == "Connected" ]; then
         mullvad disconnect
     else
         mullvad connect
@@ -101,7 +101,7 @@ mullvad_location_menu() {
 			"  (dis)connect|  ${VPN_LOCATIONS[0]}|  ${VPN_LOCATIONS[1]}|  ${VPN_LOCATIONS[2]}|  ${VPN_LOCATIONS[3]}|  ${VPN_LOCATIONS[4]}|  ${VPN_LOCATIONS[5]}|  ${VPN_LOCATIONS[6]}|  ${VPN_LOCATIONS[7]}|  ${VPN_LOCATIONS[8]}|  ${VPN_LOCATIONS[9]}|  ${VPN_LOCATIONS[10]}|  ${VPN_LOCATIONS[11]}|  ${VPN_LOCATIONS[12]}|  ${VPN_LOCATIONS[13]}|  ${VPN_LOCATIONS[14]}|  ${VPN_LOCATIONS[15]}|  ${VPN_LOCATIONS[16]}|  ${VPN_LOCATIONS[17]}|  ${VPN_LOCATIONS[18]}|  ${VPN_LOCATIONS[19]}|  ${VPN_LOCATIONS[20]}|  ${VPN_LOCATIONS[21]}|  ${VPN_LOCATIONS[22]}|  ${VPN_LOCATIONS[23]}|  ${VPN_LOCATIONS[24]}|  ${VPN_LOCATIONS[25]}|  ${VPN_LOCATIONS[26]}|  ${VPN_LOCATIONS[27]}|  ${VPN_LOCATIONS[28]}|  ${VPN_LOCATIONS[29]}|  ${VPN_LOCATIONS[30]}|  ${VPN_LOCATIONS[31]}|  ${VPN_LOCATIONS[32]}|  ${VPN_LOCATIONS[33]}|  ${VPN_LOCATIONS[34]}|  ${VPN_LOCATIONS[35]}|  ${VPN_LOCATIONS[36]}|  ${VPN_LOCATIONS[37]}|  ${VPN_LOCATIONS[38]}|  ${VPN_LOCATIONS[39]}|  ${VPN_LOCATIONS[40]}|  ${VPN_LOCATIONS[41]}|  ${VPN_LOCATIONS[42]}|  ${VPN_LOCATIONS[43]}")"
 
 	    case "$MENU" in
-	    	*connect) mullvad_toggle_connection; break;;
+	    	*connect) mullvad_toggle_connection; return;;
 			*"${VPN_LOCATIONS[0]}") mullvad relay set location ${VPN_CODES[0]};;
 			*"${VPN_LOCATIONS[1]}") mullvad relay set location ${VPN_CODES[1]};;
 			*"${VPN_LOCATIONS[2]}") mullvad relay set location ${VPN_CODES[2]};;
@@ -147,7 +147,7 @@ mullvad_location_menu() {
 			*"${VPN_LOCATIONS[42]}") mullvad relay set location ${VPN_CODES[42]};;
 	    esac
 
-	    if echo $(mullvad status) | grep -q "Connected"; then
+		if [ "$MULLVAD_STATUS" == "Connected" ]; then
 	        true
 	    else
 	        mullvad connect
