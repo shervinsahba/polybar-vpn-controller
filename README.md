@@ -36,7 +36,7 @@ format-background = ${color.mb}
 
 ## install
 
-Please review the installation, and modify as needed prior to install.
+Please review the installation, and modify as needed prior to install. After installation add `vpn` to your `config.ini` modules.
 
 ```
 git clone https://github.com/shervinsahba/polybar-module-vpn.git
