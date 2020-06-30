@@ -57,7 +57,7 @@ mullvad_report() {
 
 	ip_address=$(mullvad status | cut -d' ' -f7 | cut -d':' -f1)
 
-	if [ "$MULLVAD_STATUS" == "Connected"  ]; then
+	if [ "$MULLVAD_STATUS" = Connected  ]; then
 		if hash geoiplookup 2>/dev/null; then
 			country=$(geoiplookup "$ip_address" | head -n1 | cut -c24-25)
 			city=$(geoiplookup "$ip_address" | cut -d',' -f5 | sed -n '2{p;q}' | sed 's/ //')
@@ -65,7 +65,7 @@ mullvad_report() {
 		else
 			echo "$ip_address"
 		fi
-	elif [ "$MULLVAD_STATUS" == "Connecting" ]; then
+	elif [ "$MULLVAD_STATUS" = Connecting ]; then
 		echo "Connecting..."
 	else
 		echo "No VPN"
@@ -75,7 +75,7 @@ mullvad_report() {
 
 mullvad_toggle_connection() {
 # connects or disconnects mullvad
-	if [ "$MULLVAD_STATUS" == "Connected" ]; then
+	if [ "$MULLVAD_STATUS" = Connected ]; then
         mullvad disconnect
     else
         mullvad connect
@@ -147,7 +147,7 @@ mullvad_location_menu() {
 			*"${VPN_LOCATIONS[42]}") mullvad relay set location ${VPN_CODES[42]};;
 	    esac
 
-		if [ "$MULLVAD_STATUS" == "Connected" ]; then
+		if [ "$MULLVAD_STATUS" = Connected ]; then
 	        true
 	    else
 	        mullvad connect
