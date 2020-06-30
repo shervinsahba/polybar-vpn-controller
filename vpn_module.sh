@@ -54,7 +54,7 @@ rofi_location="-location 5 -xoffset -50 -yoffset -50"
 rofi_menu_name="Mullvad VPN"
 
 ## @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-
+## Main Script
 
 # These are country codes taken from `mullvad relay list`. 
 # They ought to connect to Mullvad's choice of VPN in the region.
@@ -66,15 +66,15 @@ VPN_CODES=("${VPN_LOCATIONS[@]}")
 VPN_CODES+=("${COUNTRY_CODES[@]}")
 VPN_LOCATIONS+=("${COUNTRIES[@]}")
 
-VPN_STATUS=$($VPNCOMMAND_STATUS | cut -d' ' -f3)
+VPN_STATUS="$($VPNCOMMAND_STATUS | cut -d' ' -f3)"
 
 
 vpn_report() {
 # continually reports connection status
 
-	ip_address=$(mullvad status | cut -d' ' -f7 | cut -d':' -f1)
+	ip_address=$($VPNCOMMAND_STATUS | cut -d' ' -f7 | cut -d':' -f1)
 
-	if [ "$MULLVAD_STATUS" = Connected  ]; then  # TODO maybe change "Connected" for other VPNs
+	if [ "$VPN_STATUS" = Connected  ]; then  # TODO maybe change "Connected" for other VPNs
 		if hash geoiplookup 2>/dev/null; then
 			country=$(geoiplookup "$ip_address" | head -n1 | cut -c24-25)
 			city=$(geoiplookup "$ip_address" | cut -d',' -f5 | sed -n '2{p;q}' | sed 's/ //')
@@ -82,7 +82,7 @@ vpn_report() {
 		else
 			echo "$ip_address"
 		fi
-	elif [ "$MULLVAD_STATUS" = Connecting ]; then  # TODO maybe change "Connecting" for other VPNs
+	elif [ "$VPN_STATUS" = Connecting ]; then  # TODO maybe change "Connecting" for other VPNs
 		echo "connecting..."
 	else
 		echo "No VPN"
@@ -92,7 +92,7 @@ vpn_report() {
 
 vpn_toggle_connection() {
 # connects or disconnects vpn
-    if [ "$MULLVAD_STATUS" = Connected ]; then
+    if [ "$VPN_STATUS" = Connected ]; then
         $VPNCOMMAND_DISCONNECT
     else
         $VPNCOMMAND_CONNECT
@@ -159,7 +159,7 @@ vpn_location_menu() {
 			*"${VPN_LOCATIONS[42]}") $VPNCOMMAND_RELAY_SET_LOCATION ${VPN_CODES[42]};;
 	    esac
 
-	    if [ "$MULLVAD_STATUS" = Connected ]; then   # TODO maybe change "Connected" for other VPNs
+	    if [ "$VPN_STATUS" = Connected ]; then   # TODO maybe change "Connected" for other VPNs
 	        true
 	    else
 	        $VPNCOMMAND_CONNECT
