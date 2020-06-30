@@ -1,8 +1,0 @@
-[module/mullvad]
-type = custom/script
-exec = $HOME/.config/polybar/scripts/mullvad_module.sh
-click-left = $HOME/.config/polybar/scripts/mullvad_module.sh --toggle-connection &
-click-right = $HOME/.config/polybar/scripts/mullvad_module.sh --location-menu &
-interval = 5
-format =  <label>
-format-background = ${color.mb}
