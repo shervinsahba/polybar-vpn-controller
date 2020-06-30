@@ -52,7 +52,7 @@ VPN_LOCATIONS+=("${COUNTRIES[@]}")
 
 MULLVAD_STATUS=$(mullvad status | cut -d' ' -f3)
 
-mullvad_report(){
+mullvad_report() {
 # continually reports connection status
 
 	ip_address=$(mullvad status | cut -d' ' -f7 | cut -d':' -f1)
