@@ -66,21 +66,23 @@ VPN_CODES=("${VPN_LOCATIONS[@]}")
 VPN_CODES+=("${COUNTRY_CODES[@]}")
 VPN_LOCATIONS+=("${COUNTRIES[@]}")
 
+VPN_STATUS=$($VPNCOMMAND_STATUS | cut -d' ' -f3)
+
+
 vpn_report() {
 # continually reports connection status
 
-	vpn_status=$($VPNCOMMAND_STATUS)
-	ip_address=$(echo $vpn_status | grep -oe [0-9].*: | cut -f1 -d:)
+	ip_address=$(mullvad status | cut -d' ' -f7 | cut -d':' -f1)
 
-	if echo $vpn_status | grep -q 'Connected'; then  # TODO maybe change "Connected" for other VPNs
+	if [ "$MULLVAD_STATUS" = Connected  ]; then  # TODO maybe change "Connected" for other VPNs
 		if hash geoiplookup 2>/dev/null; then
-			country=$(geoiplookup $ip_address | grep "GeoIP Country" | cut -d' ' -f4 | cut -d, -f1)
-			city=$(geoiplookup $ip_address | grep "GeoIP City" | cut -d, -f5 | sed 's/ //')
+			country=$(geoiplookup "$ip_address" | head -n1 | cut -c24-25)
+			city=$(geoiplookup "$ip_address" | cut -d',' -f5 | sed -n '2{p;q}' | sed 's/ //')
 			echo "$city $country"
 		else
 			echo "$ip_address"
 		fi
-	elif echo $vpn_status | grep -q 'Connecting'; then  # TODO maybe change "Connecting" for other VPNs
+	elif [ "$MULLVAD_STATUS" = Connecting ]; then  # TODO maybe change "Connecting" for other VPNs
 		echo "connecting..."
 	else
 		echo "No VPN"
@@ -90,7 +92,7 @@ vpn_report() {
 
 vpn_toggle_connection() {
 # connects or disconnects vpn
-    if echo $($VPNCOMMAND_STATUS) | grep -q "Connected"; then
+    if [ "$MULLVAD_STATUS" = Connected ]; then
         $VPNCOMMAND_DISCONNECT
     else
         $VPNCOMMAND_CONNECT
@@ -157,7 +159,7 @@ vpn_location_menu() {
 			*"${VPN_LOCATIONS[42]}") $VPNCOMMAND_RELAY_SET_LOCATION ${VPN_CODES[42]};;
 	    esac
 
-	    if echo $(VPNCOMMAND_STATUS) | grep -q "Connected"; then   # TODO maybe change "Connected" for other VPNs
+	    if [ "$MULLVAD_STATUS" = Connected ]; then   # TODO maybe change "Connected" for other VPNs
 	        true
 	    else
 	        $VPNCOMMAND_CONNECT
