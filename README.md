@@ -21,7 +21,7 @@ It'd be great to make this module more robust for other VPN's, so please contrib
 ## dependencies (assuming Mullvad VPN):
 - `mullvad-vpn` (or `mullvad-vpn-cli`)
 
-Mullvad is available in the [AUR](https://aur.archlinux.org/packages/mullvad-vpn/). If you're using another VPN, review your API and set appropriate `VPNCOMMAND` variables in `vpn_module.sh`.
+Mullvad is available in the [AUR](https://aur.archlinux.org/packages/mullvad-vpn/). Use your own VPN otherwise and see configuration for setup details.
 
 ### optional dependencies:
 - `rofi` 				  - allows menu-based control of the VPN
