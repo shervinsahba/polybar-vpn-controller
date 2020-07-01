@@ -16,7 +16,7 @@ Manage your VPN via this polybar module. The module reports the VPN's status in 
 
 Mullvad is available in the [AUR](https://aur.archlinux.org/packages/mullvad-vpn/). If you're using another VPN, review your API and set appropriate `VPNCOMMAND` variables in `vpn_module.sh`.
 
-## optional dependencies:
+### optional dependencies:
 - `rofi` 				  - allows menu-based control of the VPN
 - `geoip` and `geoip-database` - together provide country info instead of public address
 - `geoip-database-extra`  - also provides city info
@@ -28,7 +28,8 @@ The optional dependencies can be found in the [Arch Package Repository](https://
 
 ### polybar module
 
-The setup assumes that your `polybar` configuration is at `~/.config/polybar`. Modify as necessary.
+This setup assumes that your `polybar` configuration is at `~/.config/polybar`.
+
 ```
 [module/vpn]
 type = custom/script
@@ -43,7 +44,7 @@ format-background = ${color.mb}
 
 ### install
 
-Please review the installation prior to committing commands. After installation add `vpn` to your `config.ini` modules.
+To setup a VPN other than Mullvad, read the configuration tips in `vpn_module.sh`. Modify as necessary.
 
 ```
 git clone https://github.com/shervinsahba/polybar-module-vpn.git
@@ -51,3 +52,5 @@ cd polybar-module-vpn
 cp fonts/* $HOME/.local/share/fonts/
 cp vpn_module.sh $HOME/.config/polybar/scripts/
 cat vpn_user_module >> $HOME/.config/polybar/user_modules.ini
+```
+After installation add `vpn` to your `config.ini` modules.
