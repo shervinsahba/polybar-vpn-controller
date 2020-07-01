@@ -1,6 +1,9 @@
 # polybar-module-vpn
 
-This polybar module reports the VPN's status in one of three states: `[<ip_address> | connecting... | No VPN ]`, where the IP address is your public IP given after connecting to Mullvad. With optional dependencies, `<ip_address>` will be replaced with `<city> <country>`. You can also connect and disconnect via left-clicks, or with rofi, right-click to access a menu and select between your favorite locations, set in VPN_LOCATIONS, as well as 35 countries.
+Manage your VPN via this polybar module. The module reports the VPN's status in one of three states: `[<ip_address> | connecting... | No VPN ]`, where the IP address is your public IP given after connecting to Mullvad. With optional dependencies, `<ip_address>` will be replaced with `<city> <country>`.
+- left-click to connect and disconnect
+- right-click to access an optional rofi menu and select between your favorite locations as well as 35 countries
+- middle-click to copy your public IP address to the clipboard
 
 **The stock settings are intended for use with [Mullvad VPN](https://mullvad.net).** The module is scripted to facilitate other VPN's, but compatibility will depend on your VPN's API. See the `vpn_module.sh` script user settings to judge whether this code can easily be adapted for your choice of VPN. Thanks!
 
@@ -13,30 +16,34 @@ This polybar module reports the VPN's status in one of three states: `[<ip_addre
 
 Mullvad is available in the [AUR](https://aur.archlinux.org/packages/mullvad-vpn/). If you're using another VPN, review your API and set appropriate `VPNCOMMAND` variables in `vpn_module.sh`.
 
-## optional dependencies: 
+## optional dependencies:
 - `rofi` 				  - allows menu-based control of the VPN
 - `geoip` and `geoip-database` - together provide country info instead of public address
 - `geoip-database-extra`  - also provides city info
+- `xclip`                 - allows copying ip address to clipboard
 
 The optional dependencies can be found in the [Arch Package Repository](https://www.archlinux.org/packages/).
 
-## polybar module
+## configuration
 
-The `vpn_user_module` assumes that `polybar` is installed at `~/.config/polybar`. Modify as necessary.
+### polybar module
+
+The setup assumes that your `polybar` configuration is at `~/.config/polybar`. Modify as necessary.
 ```
 [module/vpn]
 type = custom/script
 exec = $HOME/.config/polybar/scripts/vpn_module.sh
 click-left = $HOME/.config/polybar/scripts/vpn_module.sh --toggle-connection &
 click-right = $HOME/.config/polybar/scripts/vpn_module.sh --location-menu &
+click-middle = $HOME/.config/polybar/scripts/vpn_module.sh --ip_address &
 interval = 5
 format =  <label>
 format-background = ${color.mb}
 ```
 
-## install
+### install
 
-Please review the installation, and modify as needed prior to install. After installation add `vpn` to your `config.ini` modules.
+Please review the installation prior to committing commands. After installation add `vpn` to your `config.ini` modules.
 
 ```
 git clone https://github.com/shervinsahba/polybar-module-vpn.git
