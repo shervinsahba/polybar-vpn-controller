@@ -1,4 +1,4 @@
-# polybar-module-vpn
+# polybar-vpn-controller
 
 Manage your VPN via this polybar module. The module reports the VPN's status in one of three states: `[<ip_address> | connecting... | No VPN ]`, where the IP address is your public IP given after connecting to Mullvad. With optional dependencies, `<ip_address>` will be replaced with `<city> <country>`.
 - left-click to connect and disconnect
@@ -24,7 +24,7 @@ It'd be great to make this module more robust for other VPN's, so please contrib
 Mullvad is available in the [AUR](https://aur.archlinux.org/packages/mullvad-vpn/). Use your own VPN otherwise and see configuration for setup details.
 
 ### optional dependencies:
-- `rofi` 				  - allows menu-based control of the VPN
+- `rofi` 				  - allowser menu-based control of the VPN
 - `geoip` and `geoip-database` - together provide country info instead of public address
 - `geoip-database-extra`  - also provides city info
 - `xclip`                 - allows copying ip address to clipboard
@@ -54,8 +54,8 @@ format-background = ${color.mb}
 To setup a VPN other than Mullvad, read the configuration tips in `vpn_module.sh`. Modify as necessary.
 
 ```
-git clone https://github.com/shervinsahba/polybar-module-vpn.git
-cd polybar-module-vpn
+git clone https://github.com/shervinsahba/polybar-vpn-controller.git
+cd polybar-vpn-controller
 cp fonts/* $HOME/.local/share/fonts/
 cp vpn_module.sh $HOME/.config/polybar/scripts/
 cat vpn_user_module >> $HOME/.config/polybar/user_modules.ini
