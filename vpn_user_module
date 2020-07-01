@@ -3,6 +3,7 @@ type = custom/script
 exec = $HOME/.config/polybar/scripts/vpn_module.sh
 click-left = $HOME/.config/polybar/scripts/vpn_module.sh --toggle-connection &
 click-right = $HOME/.config/polybar/scripts/vpn_module.sh --location-menu &
+click-middle = $HOME/.config/polybar/scripts/vpn_module.sh --ip_address &
 interval = 5
 format =  <label>
 format-background = ${color.mb}
