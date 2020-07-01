@@ -7,7 +7,7 @@ Manage your VPN via this polybar module. The module reports the VPN's status in 
 
 **The stock settings are intended for use with [Mullvad VPN](https://mullvad.net).** The module is scripted to facilitate other VPN's, but compatibility will depend on your VPN's API. See the `vpn_module.sh` script user settings to judge whether this code can easily be adapted for your choice of VPN. Thanks!
 
-![](mullvad-demo.gif)
+![](vpn-module-demo.gif)
 
 ###### (The polybar theme seen in the gif was modified from polybar-5 provided by [Aditya Shakya](https://github.com/adi1090x/polybar-themes) and originally designed by [Benedikt Vollmerhaus](https://gitlab.com/BVollmerhaus))
 
