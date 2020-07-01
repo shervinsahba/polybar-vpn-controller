@@ -118,7 +118,7 @@ vpn_location_menu() {
 	if hash rofi 2>/dev/null; then
 
 		MENU="$(rofi \
-			-font "$rofi_font" -theme "$rofi_theme" "$rofi_location" \
+			-font "$rofi_font" -theme "$rofi_theme" $rofi_location \
 			-columns 1 -width 10 -hide-scrollbar \
 			-line-padding 4 -padding 20 -lines 9 \
 			-sep "|" -dmenu -i -p "$rofi_menu_name" <<< \
