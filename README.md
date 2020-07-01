@@ -5,7 +5,14 @@ Manage your VPN via this polybar module. The module reports the VPN's status in 
 - right-click to access an optional rofi menu and select between your favorite locations as well as 35 countries
 - middle-click to copy your public IP address to the clipboard
 
-**The stock settings are intended for use with [Mullvad VPN](https://mullvad.net).** The module is scripted to facilitate other VPN's, but compatibility will depend on your VPN's API. See the `vpn_module.sh` script user settings to judge whether this code can easily be adapted for your choice of VPN. Thanks!
+
+### vpn support
+**The stock settings are intended for use with [Mullvad VPN](https://mullvad.net).**
+
+The module is scripted to facilitate other VPN's, but compatibility will depend on your VPN's API. See the `vpn_module.sh` script user settings to judge whether this code can easily be adapted for your choice of VPN.
+
+It'd be great to make this module more robust for other VPN's, so please contribute other setups. Thanks!
+
 
 ![](vpn-module-demo.gif)
 
