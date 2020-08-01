@@ -49,7 +49,6 @@ CONNECTING=Connecting
 # orange=#FF6600
 # yellow=#FFFF00
 # purple=#CC33FF
-#TODO(sudo-julia) fix color codes only running with ansi assignments
 COLOR_CONNECTED=#00CC66
 COLOR_CONNECTING=#FFFF00
 COLOR_DISCONNECTED=#FF3300
