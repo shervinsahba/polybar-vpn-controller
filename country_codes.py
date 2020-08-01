@@ -9,7 +9,7 @@ countries = {
     "brazil": "br",
     "bulgaria": "bg",
     "canada": "ca",
-    "czech Republic": "cz",
+    "czech republic": "cz",
     "denmark": "dk",
     "finland": "fi",
     "france": "fr",
@@ -25,7 +25,7 @@ countries = {
     "luxembourg": "lu",
     "moldova": "md",
     "netherlands": "nl",
-    "new Zeland": "nz",
+    "new zealand": "nz",
     "norway": "no",
     "poland": "pl",
     "romania": "ro",
@@ -41,13 +41,12 @@ countries = {
 
 # be sure to quote your arg so countries with spaces don't break the script
 # exit code key for integration in main script:
-# 1 = incorrect num of args; 2 = country not in dict
+#   1 = incorrect num of args; 2 = country not in dict
 if len(argv) != 2:
     exit(1)
 else:
-    pass
+    country = argv[1].lower()
 
-country = argv[1].lower()
 
 if country in countries:
     print(countries[country])
