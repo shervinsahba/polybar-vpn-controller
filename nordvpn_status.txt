@@ -1,0 +1,10 @@
+Status: Disconnected
+
+Status: Connected
+Current server: fi126.nordvpn.com
+Country: Finland
+City: Helsinki
+Your new IP: 196.196.203.67
+Current technology: NordLynx
+Transfer: 42.00 KiB received, 26.96 KiB sent
+Uptime: 9 seconds

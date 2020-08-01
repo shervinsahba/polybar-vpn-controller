@@ -1,5 +1,6 @@
 from sys import argv
 
+# if a country you use isn't in here, open an issue or pull request
 countries = {
     "albania": "al",
     "austrailia": "au",
@@ -39,6 +40,8 @@ countries = {
 }
 
 # be sure to quote your arg so countries with spaces don't break the script
+# exit code key for integration in main script:
+# 1 = incorrect num of args; 2 = country not in dict
 if len(argv) != 2:
     exit(1)
 else:
@@ -49,5 +52,4 @@ country = argv[1].lower()
 if country in countries:
     print(countries[country])
 else:
-    print("Not in country dict.")
-    exit(1)
+    exit(2)

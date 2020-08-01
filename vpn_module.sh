@@ -37,10 +37,11 @@ VPN_RELAY_SET_LOCATION="mullvad relay set location"
 
 ## [Set VPN status parsing]
 # The first command cuts the status, which is compared to keywords below.
-# TODO: Add community submissions for other VPNs to make this section robust!
-VPN_STATUS="$($VPN_GET_STATUS | cut -d' ' -f3)"	# returns Connected/Connecting/<other>
-CONNECTED=Connected
-CONNECTING=Connecting
+# Note from Julia: this should cover most VPNs, if it's missing something let me know
+VPN_STATUS="$($VPN_GET_STATUS | grep -Eio 'connected|connecting|disconnected' \
+	| tr '[:upper:]' '[:lower:]')"
+CONNECTED=connected
+CONNECTING=connecting
 
 ## [Set colors] (set each variable to nothing for default color)
 # green=#00CC66
@@ -81,12 +82,13 @@ VPN_CODES+=("${COUNTRY_CODES[@]}")
 VPN_LOCATIONS+=("${COUNTRIES[@]}")
 
 
+# TODO(julia) integrate a --no-geoip switch for people using a VPN whose status command
+#             contains the country to negate the geoiplookup
 vpn_report() {
 # continually reports connection status
 	if [ "$VPN_STATUS" = "$CONNECTED"  ]; then
 		ip_address=$($VPN_GET_STATUS | \
 		awk 'match($0,/[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+/){print substr($0,RSTART,RLENGTH)}')
-# move this above the first if statement if something breaks
 
 		if hash geoiplookup 2>/dev/null; then
 			country=$(geoiplookup "$ip_address" | head -n1 | cut -c24-25)
@@ -119,12 +121,14 @@ vpn_location_menu() {
 	if hash rofi 2>/dev/null; then
 
 		MENU="$(rofi \
-			-font "$rofi_font" -theme "$rofi_theme" $rofi_location \
+			-font "$rofi_font" -theme "$rofi_theme" "$rofi_location" \
 			-columns 1 -width 10 -hide-scrollbar \
 			-line-padding 4 -padding 20 -lines 9 \
 			-sep "|" -dmenu -i -p "$rofi_menu_name" <<< \
 			" $icon_connect (dis)connect| $icon_fav ${VPN_LOCATIONS[0]}| $icon_fav ${VPN_LOCATIONS[1]}| $icon_fav ${VPN_LOCATIONS[2]}| $icon_fav ${VPN_LOCATIONS[3]}| $icon_fav ${VPN_LOCATIONS[4]}| $icon_fav ${VPN_LOCATIONS[5]}| $icon_fav ${VPN_LOCATIONS[6]}| $icon_fav ${VPN_LOCATIONS[7]}| $icon_country ${VPN_LOCATIONS[8]}| $icon_country ${VPN_LOCATIONS[9]}| $icon_country ${VPN_LOCATIONS[10]}| $icon_country ${VPN_LOCATIONS[11]}| $icon_country ${VPN_LOCATIONS[12]}| $icon_country ${VPN_LOCATIONS[13]}| $icon_country ${VPN_LOCATIONS[14]}| $icon_country ${VPN_LOCATIONS[15]}| $icon_country ${VPN_LOCATIONS[16]}| $icon_country ${VPN_LOCATIONS[17]}| $icon_country ${VPN_LOCATIONS[18]}| $icon_country ${VPN_LOCATIONS[19]}| $icon_country ${VPN_LOCATIONS[20]}| $icon_country ${VPN_LOCATIONS[21]}| $icon_country ${VPN_LOCATIONS[22]}| $icon_country ${VPN_LOCATIONS[23]}| $icon_country ${VPN_LOCATIONS[24]}| $icon_country ${VPN_LOCATIONS[25]}| $icon_country ${VPN_LOCATIONS[26]}| $icon_country ${VPN_LOCATIONS[27]}| $icon_country ${VPN_LOCATIONS[28]}| $icon_country ${VPN_LOCATIONS[29]}| $icon_country ${VPN_LOCATIONS[30]}| $icon_country ${VPN_LOCATIONS[31]}| $icon_country ${VPN_LOCATIONS[32]}| $icon_country ${VPN_LOCATIONS[33]}| $icon_country ${VPN_LOCATIONS[34]}| $icon_country ${VPN_LOCATIONS[35]}| $icon_country ${VPN_LOCATIONS[36]}| $icon_country ${VPN_LOCATIONS[37]}| $icon_country ${VPN_LOCATIONS[38]}| $icon_country ${VPN_LOCATIONS[39]}| $icon_country ${VPN_LOCATIONS[40]}| $icon_country ${VPN_LOCATIONS[41]}| $icon_country ${VPN_LOCATIONS[42]}| $icon_country ${VPN_LOCATIONS[43]}")"
 
+		# TODO(julia) can these be quoted? i feel like last time it broke something
+		# shellcheck disable=SC2086
 	    case "$MENU" in
 			*connect) vpn_toggle_connection; return;;
 			*"${VPN_LOCATIONS[0]}") $VPN_RELAY_SET_LOCATION ${VPN_CODES[0]};;
