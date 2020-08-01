@@ -5,7 +5,7 @@ countries = {
     "albania": "al",
     "austrailia": "au",
     "austria": "at",
-    "belguim": "be",
+    "belgium": "be",
     "brazil": "br",
     "bulgaria": "bg",
     "canada": "ca",
@@ -41,13 +41,14 @@ countries = {
 
 # be sure to quote your arg so countries with spaces don't break the script
 # exit code key for integration in main script:
-#   1 = incorrect num of args; 2 = country not in dict
 if len(argv) != 2:
     exit(1)
 else:
-    country = argv[1].lower()
+    pass
 
+country = argv[1].lower()
 
+# TODO elif code is given, translate it to country
 if country in countries:
     print(countries[country])
 else:

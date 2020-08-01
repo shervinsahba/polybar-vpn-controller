@@ -30,6 +30,7 @@
 ## [Set VPN commands]. Setup for Mullvad is done below.
 # The first three commands should have direct equivalents for most VPNs.
 # The relay_set command assumes <country_code> <city_code> will follow as arguments. See below.
+VPN_PROVIDER="Mullvad"
 VPN_CONNECT="mullvad connect"
 VPN_DISCONNECT="mullvad disconnect"
 VPN_GET_STATUS="mullvad status"
@@ -65,7 +66,7 @@ icon_country=
 rofi_font="Fira Code Retina 15"
 rofi_theme="solarized_alternate"
 rofi_location="-location 5 -xoffset -50 -yoffset -50"
-rofi_menu_name="Mullvad VPN"
+rofi_menu_name="$VPN_PROVIDER VPN"
 
 
 ## @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -87,12 +88,19 @@ VPN_LOCATIONS+=("${COUNTRIES[@]}")
 vpn_report() {
 # continually reports connection status
 	if [ "$VPN_STATUS" = "$CONNECTED"  ]; then
-		ip_address=$($VPN_GET_STATUS | \
+		if [ "$@" ] && [ "$1" == "--no-geoip" ]; then
+			country=$("$VPN_GET_STATUS" | awk 'tolower ($0) ~ /country/{print $2}')
+			city=$("VPN_GET_STATUS" | awk 'tolower ($0) ~ /country/{print $2}')
+			country_code=$(/usr/bin/env python3 ./country_codes.py "$country")
+			return
+		fi
+
+		ip_address=$("$VPN_GET_STATUS" | \
 		awk 'match($0,/[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+/){print substr($0,RSTART,RLENGTH)}')
 
 		if hash geoiplookup 2>/dev/null; then
 			country=$(geoiplookup "$ip_address" | head -n1 | cut -c24-25)
-			city=$(geoiplookup "$ip_address" | cut -d',' -f5 | sed -n '2{p;q}' | sed 's/ //')
+			city=$(geoiplookup "$ip_address" | cut -d',' -f5 | sed -n '2{p;q}' | sed 's/^ //')
 			echo "%{F$COLOR_CONNECTED}$city $country%{F-}"
 		else
 			echo "%{F$COLOR_CONNECTED}$ip_address%{F-}"
@@ -201,5 +209,6 @@ case "$1" in
 	--toggle-connection) vpn_toggle_connection ;;
 	--location-menu) vpn_location_menu ;;
 	--ip-address) ip_address_to_clipboard ;;
+	--no-geoip) vpn_report --no-geoip ;;
 	*) vpn_report ;;
 esac
