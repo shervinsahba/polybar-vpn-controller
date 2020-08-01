@@ -91,11 +91,13 @@ vpn_report() {
 		if [ "$@" ] && [ "$1" == "--no-geoip" ]; then
 			country=$("$VPN_GET_STATUS" | awk 'tolower ($0) ~ /country/{print $2}')
 			city=$("VPN_GET_STATUS" | awk 'tolower ($0) ~ /country/{print $2}')
-			country_code=$(/usr/bin/env python3 ./country_codes.py "$country")
+			echo "%{F$COLOR_CONNECTED}$city $country%{F-}"
+			# XXX this is how it would be used to find country code
+			#country_code=$(/usr/bin/env python3 ./country_codes.py "$country")
 			return
 		fi
 
-		ip_address=$("$VPN_GET_STATUS" | \
+		ip_address=$($VPN_GET_STATUS | \
 		awk 'match($0,/[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+/){print substr($0,RSTART,RLENGTH)}')
 
 		if hash geoiplookup 2>/dev/null; then
