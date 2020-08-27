@@ -60,3 +60,8 @@ cp vpn_module.sh $HOME/.config/polybar/scripts/
 cat vpn_user_module >> $HOME/.config/polybar/user_modules.ini
 ```
 After installation add `vpn` to your `config.ini` modules.
+
+### issues
+
+Using the default configuration provided with Mullvad (tested on Manjaro and Arch), the client will create two entries in system logs every couple of seconds, flooding them rather quickly.
+To fix this, follow [these](https://github.com/shervinsahba/polybar-vpn-controller/issues/6#issuecomment-669652829) instructions for a distro with `systemd`. With problems on non Arch-based distros, or systems without `systemd` for init, please open an issue.
