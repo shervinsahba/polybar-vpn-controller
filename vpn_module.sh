@@ -89,18 +89,14 @@ vpn_report() {
 # continually reports connection status
 	if [ "$VPN_STATUS" = "$CONNECTED"  ]; then
 		if [ "$@" ] && [ "$1" == "--no-geoip" ]; then
-			country=$("$VPN_GET_STATUS" | awk 'tolower ($0) ~ /country/{print $2}')
-			city=$("VPN_GET_STATUS" | awk 'tolower ($0) ~ /country/{print $2}')
+			country=$($VPN_GET_STATUS | awk 'tolower ($0) ~ /country/{print $2}')
+			city=$($VPN_GET_STATUS | awk 'tolower ($0) ~ /country/{print $2}')
 			echo "%{F$COLOR_CONNECTED}$city $country%{F-}"
 			# XXX this is how it would be used to find country code
-			#country_code=$(/usr/bin/env python3 ./country_codes.py "$country")
-			return
-		fi
-
+			#country_code=$(./country_codes.py "$country")
 		ip_address=$($VPN_GET_STATUS | \
 		awk 'match($0,/[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+/){print substr($0,RSTART,RLENGTH)}')
-
-		if hash geoiplookup 2>/dev/null; then
+		elif hash geoiplookup 2>/dev/null; then
 			country=$(geoiplookup "$ip_address" | head -n1 | cut -c24-25)
 			city=$(geoiplookup "$ip_address" | cut -d',' -f5 | sed -n '2{p;q}' | sed 's/^ //')
 			echo "%{F$COLOR_CONNECTED}$city $country%{F-}"
@@ -137,7 +133,6 @@ vpn_location_menu() {
 			-sep "|" -dmenu -i -p "$rofi_menu_name" <<< \
 			" $icon_connect (dis)connect| $icon_fav ${VPN_LOCATIONS[0]}| $icon_fav ${VPN_LOCATIONS[1]}| $icon_fav ${VPN_LOCATIONS[2]}| $icon_fav ${VPN_LOCATIONS[3]}| $icon_fav ${VPN_LOCATIONS[4]}| $icon_fav ${VPN_LOCATIONS[5]}| $icon_fav ${VPN_LOCATIONS[6]}| $icon_fav ${VPN_LOCATIONS[7]}| $icon_country ${VPN_LOCATIONS[8]}| $icon_country ${VPN_LOCATIONS[9]}| $icon_country ${VPN_LOCATIONS[10]}| $icon_country ${VPN_LOCATIONS[11]}| $icon_country ${VPN_LOCATIONS[12]}| $icon_country ${VPN_LOCATIONS[13]}| $icon_country ${VPN_LOCATIONS[14]}| $icon_country ${VPN_LOCATIONS[15]}| $icon_country ${VPN_LOCATIONS[16]}| $icon_country ${VPN_LOCATIONS[17]}| $icon_country ${VPN_LOCATIONS[18]}| $icon_country ${VPN_LOCATIONS[19]}| $icon_country ${VPN_LOCATIONS[20]}| $icon_country ${VPN_LOCATIONS[21]}| $icon_country ${VPN_LOCATIONS[22]}| $icon_country ${VPN_LOCATIONS[23]}| $icon_country ${VPN_LOCATIONS[24]}| $icon_country ${VPN_LOCATIONS[25]}| $icon_country ${VPN_LOCATIONS[26]}| $icon_country ${VPN_LOCATIONS[27]}| $icon_country ${VPN_LOCATIONS[28]}| $icon_country ${VPN_LOCATIONS[29]}| $icon_country ${VPN_LOCATIONS[30]}| $icon_country ${VPN_LOCATIONS[31]}| $icon_country ${VPN_LOCATIONS[32]}| $icon_country ${VPN_LOCATIONS[33]}| $icon_country ${VPN_LOCATIONS[34]}| $icon_country ${VPN_LOCATIONS[35]}| $icon_country ${VPN_LOCATIONS[36]}| $icon_country ${VPN_LOCATIONS[37]}| $icon_country ${VPN_LOCATIONS[38]}| $icon_country ${VPN_LOCATIONS[39]}| $icon_country ${VPN_LOCATIONS[40]}| $icon_country ${VPN_LOCATIONS[41]}| $icon_country ${VPN_LOCATIONS[42]}| $icon_country ${VPN_LOCATIONS[43]}")"
 
-		# TODO(julia) can these be quoted? i feel like last time it broke something
 		# shellcheck disable=SC2086
 	    case "$MENU" in
 			*connect) vpn_toggle_connection; return;;

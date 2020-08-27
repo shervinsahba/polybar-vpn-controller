@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from sys import argv
 
 # if a country you use isn't in here, open an issue or pull request
