@@ -83,6 +83,17 @@ VPN_CODES+=("${COUNTRY_CODES[@]}")
 VPN_LOCATIONS+=("${COUNTRIES[@]}")
 
 
+ip_address_lookup() {
+	ip_address=$($VPN_GET_STATUS | \
+		awk 'match($0,/[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+/){print substr($0,RSTART,RLENGTH)}')
+	if [ -z "$ip_address" ]; then
+		ip_address=$(curl --silent https://ipaddr.pub)
+		# could also use https://ifconfig.io, checkip.amazonaws.com
+	fi
+	echo "$ip_address"
+}
+
+
 # TODO(julia) integrate a --no-geoip switch for people using a VPN whose status command
 #             contains the country to negate the geoiplookup
 vpn_report() {
@@ -94,14 +105,13 @@ vpn_report() {
 			echo "%{F$COLOR_CONNECTED}$city $country%{F-}"
 			# XXX this is how it would be used to find country code
 			#country_code=$(./country_codes.py "$country")
-		ip_address=$($VPN_GET_STATUS | \
-		awk 'match($0,/[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+/){print substr($0,RSTART,RLENGTH)}')
 		elif hash geoiplookup 2>/dev/null; then
+			ip_address=$(ip_address_lookup)
 			country=$(geoiplookup "$ip_address" | head -n1 | cut -c24-25)
 			city=$(geoiplookup "$ip_address" | cut -d',' -f5 | sed -n '2{p;q}' | sed 's/^ //')
 			echo "%{F$COLOR_CONNECTED}$city $country%{F-}"
 		else
-			echo "%{F$COLOR_CONNECTED}$ip_address%{F-}"
+			echo "%{F$COLOR_CONNECTED}$(ip_address_lookup)%{F-}"
 		fi
 	elif [ "$VPN_STATUS" = "$CONNECTING" ]; then
 		echo "%{F$COLOR_CONNECTING}Connecting...%{F-}"
@@ -192,11 +202,10 @@ vpn_location_menu() {
 
 ip_address_to_clipboard() {
 # finds your IP and copies to clipboard
-# could also use https://ifconfig.io, checkip.amazonaws.com
-	ip_address=$(curl --silent https://ipaddr.pub)
+	ip_address=$(ip_address_lookup)
 	echo "$ip_address" | xclip -selection clipboard
 
-# TODO: why doesn't this echo display in polybar?
+	# TODO: why doesn't this echo display in polybar?
 	echo "$ip_address"
 }
 
