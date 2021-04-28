@@ -41,19 +41,13 @@ VPN_RELAY_SET_LOCATION="mullvad relay set location"
 # Note from Julia: this should cover most VPNs, if it's missing something let me know
 VPN_STATUS="$($VPN_GET_STATUS | grep -Eio 'connected|connecting|disconnected' \
 	| tr '[:upper:]' '[:lower:]')"
-CONNECTED=connected
-CONNECTING=connecting
+CONNECTED="connected"
+CONNECTING="connecting"
 
 ## [Set colors] (set each variable to nothing for default color)
-# green=#00CC66
-# red=#FF3300
-# blue=#0066FF
-# orange=#FF6600
-# yellow=#FFFF00
-# purple=#CC33FF
-COLOR_CONNECTED=#00CC66
-COLOR_CONNECTING=#FFFF00
-COLOR_DISCONNECTED=#FF3300
+COLOR_CONNECTED="#00CC66"
+COLOR_CONNECTING="#FFFF00"
+COLOR_DISCONNECTED="#FF3300"
 
 ## [Set 8 favorite VPN locations]
 # These are passed to your VPN as `$VPNCOMMAND_RELAY_SET_LOCATION <input>`.
@@ -63,9 +57,9 @@ VPN_LOCATIONS=("us sea" "us chi" "us nyc" "us" "jp" "au" "fr" "br")
 icon_connect=
 icon_fav=
 icon_country=
-rofi_font="Fira Code Retina 15"
+rofi_font="icomoon-feather 15"
 rofi_theme="solarized_alternate"
-rofi_location="-location 5 -xoffset -50 -yoffset -50"
+rofi_location="-location 5 -xoffset -200 -yoffset -50"
 rofi_menu_name="$VPN_PROVIDER VPN"
 
 
@@ -136,13 +130,15 @@ vpn_location_menu() {
 
 	if hash rofi 2>/dev/null; then
 
+		## shellcheck throws errors here, but the globbing is intentional
+		# shellcheck disable=SC2086
 		MENU="$(rofi \
 			-font "$rofi_font" -theme "$rofi_theme" $rofi_location \
-				# rofi_location needs no quotes to glob correctly
 			-columns 1 -width 10 -hide-scrollbar \
 			-line-padding 4 -padding 20 -lines 9 \
 			-sep "|" -dmenu -i -p "$rofi_menu_name" <<< \
 			" $icon_connect (dis)connect| $icon_fav ${VPN_LOCATIONS[0]}| $icon_fav ${VPN_LOCATIONS[1]}| $icon_fav ${VPN_LOCATIONS[2]}| $icon_fav ${VPN_LOCATIONS[3]}| $icon_fav ${VPN_LOCATIONS[4]}| $icon_fav ${VPN_LOCATIONS[5]}| $icon_fav ${VPN_LOCATIONS[6]}| $icon_fav ${VPN_LOCATIONS[7]}| $icon_country ${VPN_LOCATIONS[8]}| $icon_country ${VPN_LOCATIONS[9]}| $icon_country ${VPN_LOCATIONS[10]}| $icon_country ${VPN_LOCATIONS[11]}| $icon_country ${VPN_LOCATIONS[12]}| $icon_country ${VPN_LOCATIONS[13]}| $icon_country ${VPN_LOCATIONS[14]}| $icon_country ${VPN_LOCATIONS[15]}| $icon_country ${VPN_LOCATIONS[16]}| $icon_country ${VPN_LOCATIONS[17]}| $icon_country ${VPN_LOCATIONS[18]}| $icon_country ${VPN_LOCATIONS[19]}| $icon_country ${VPN_LOCATIONS[20]}| $icon_country ${VPN_LOCATIONS[21]}| $icon_country ${VPN_LOCATIONS[22]}| $icon_country ${VPN_LOCATIONS[23]}| $icon_country ${VPN_LOCATIONS[24]}| $icon_country ${VPN_LOCATIONS[25]}| $icon_country ${VPN_LOCATIONS[26]}| $icon_country ${VPN_LOCATIONS[27]}| $icon_country ${VPN_LOCATIONS[28]}| $icon_country ${VPN_LOCATIONS[29]}| $icon_country ${VPN_LOCATIONS[30]}| $icon_country ${VPN_LOCATIONS[31]}| $icon_country ${VPN_LOCATIONS[32]}| $icon_country ${VPN_LOCATIONS[33]}| $icon_country ${VPN_LOCATIONS[34]}| $icon_country ${VPN_LOCATIONS[35]}| $icon_country ${VPN_LOCATIONS[36]}| $icon_country ${VPN_LOCATIONS[37]}| $icon_country ${VPN_LOCATIONS[38]}| $icon_country ${VPN_LOCATIONS[39]}| $icon_country ${VPN_LOCATIONS[40]}| $icon_country ${VPN_LOCATIONS[41]}| $icon_country ${VPN_LOCATIONS[42]}| $icon_country ${VPN_LOCATIONS[43]}")"
+
 
 		# shellcheck disable=SC2086
 	    case "$MENU" in
@@ -205,9 +201,6 @@ ip_address_to_clipboard() {
 # finds your IP and copies to clipboard
 	ip_address=$(ip_address_lookup)
 	echo "$ip_address" | xclip -selection clipboard
-
-	# TODO: why doesn't this echo display in polybar?
-	echo "$ip_address"
 }
 
 
