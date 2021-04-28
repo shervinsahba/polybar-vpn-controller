@@ -16,13 +16,11 @@ It'd be great to make this module more robust for other VPN's, so please contrib
 
 ## dependencies
 You need a VPN! 
-- `mullvad-vpn`, available in the [AUR](https://aur.archlinux.org/packages/mullvad-vpn/).
-- or, your own VPN (this will require reconfiguring vpn_module.sh)
+- `mullvad-vpn`, available in the [AUR](https://aur.archlinux.org/packages/mullvad-vpn/)
+- or your own VPN (requires reconfiguring `vpn_module.sh`)
 
 ### optional dependencies
-For menu:
 - `rofi` 				  - menu-based control of the VPN
-For geolocation:
 - `geoip` and `geoip-database` - provide country info instead of public IP address
 - `geoip-database-extra`  - also provides city info
 - `xclip`                 - allows copying ip address to clipboard
