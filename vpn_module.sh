@@ -87,8 +87,6 @@ ip_address_lookup() {
 }
 
 
-# TODO(julia) integrate a --no-geoip switch for people using a VPN whose status command
-#             contains the country to negate the geoiplookup
 vpn_report() {
 # continually reports connection status
 	if [ "$VPN_STATUS" = "$CONNECTED"  ]; then
@@ -96,8 +94,6 @@ vpn_report() {
 			country=$($VPN_GET_STATUS | awk 'tolower ($0) ~ /country/{print $2}')
 			city=$($VPN_GET_STATUS | awk 'tolower ($0) ~ /country/{print $2}')
 			echo " %{F$COLOR_CONNECTED}$city $country%{F-}"
-			# XXX this is how it would be used to find country code
-			#country_code=$(./country_codes.py "$country")
 		elif hash geoiplookup 2>/dev/null; then
 			ip_address=$(ip_address_lookup)
 			country=$(geoiplookup "$ip_address" | head -n1 | cut -c24-25)
