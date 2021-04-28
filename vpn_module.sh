@@ -82,7 +82,6 @@ ip_address_lookup() {
 		awk 'match($0,/[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+/){print substr($0,RSTART,RLENGTH)}')
 	if [ -z "$ip_address" ]; then
 		ip_address=$(curl --silent https://ipaddr.pub)
-		# could also use https://ifconfig.io, checkip.amazonaws.com
 	fi
 	echo "$ip_address"
 }
@@ -96,21 +95,21 @@ vpn_report() {
 		if [ "$@" ] && [ "$1" == "--no-geoip" ]; then
 			country=$($VPN_GET_STATUS | awk 'tolower ($0) ~ /country/{print $2}')
 			city=$($VPN_GET_STATUS | awk 'tolower ($0) ~ /country/{print $2}')
-			echo "%{F$COLOR_CONNECTED}$city $country%{F-}"
+			echo " %{F$COLOR_CONNECTED}$city $country%{F-}"
 			# XXX this is how it would be used to find country code
 			#country_code=$(./country_codes.py "$country")
 		elif hash geoiplookup 2>/dev/null; then
 			ip_address=$(ip_address_lookup)
 			country=$(geoiplookup "$ip_address" | head -n1 | cut -c24-25)
 			city=$(geoiplookup "$ip_address" | cut -d',' -f5 | sed -n '2{p;q}' | sed 's/^ //')
-			echo "%{F$COLOR_CONNECTED}$city $country%{F-}"
+			echo " %{F$COLOR_CONNECTED}$city $country%{F-}"
 		else
-			echo "%{F$COLOR_CONNECTED}$(ip_address_lookup)%{F-}"
+			echo " %{F$COLOR_CONNECTED}$(ip_address_lookup)%{F-}"
 		fi
 	elif [ "$VPN_STATUS" = "$CONNECTING" ]; then
-		echo "%{F$COLOR_CONNECTING}Connecting...%{F-}"
+		echo " %{F$COLOR_CONNECTING}Connecting...%{F-}"
 	else
-		echo "%{F$COLOR_DISCONNECTED}No VPN%{F-}"
+		echo " %{F$COLOR_DISCONNECTED}No VPN%{F-}"
 	fi
 }
 
