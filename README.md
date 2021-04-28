@@ -1,67 +1,50 @@
 # polybar-vpn-controller
 
-Manage your VPN via this polybar module. The module reports the VPN's status in one of three states: `[<ip_address> | connecting... | No VPN ]`, where the IP address is your public IP given after connecting to Mullvad. With optional dependencies, `<ip_address>` will be replaced with `<city> <country>`.
-- left-click to connect and disconnect
-- right-click to access an optional rofi menu and select between your favorite locations as well as 35 countries
-- middle-click to copy your public IP address to the clipboard
+Manage your VPN via this polybar module. The module reports the VPN's status in one of three states: `[<location> | connecting... | No VPN ]`, where the location is your public IP address. With optional dependencies, `<location>` is replaced with `<city> <country>`.
+- left-click: to connect and disconnect
+- right-click: optional rofi menu to select between locations
+- middle-click: copy your public IP address to the clipboard
 
 ![](vpn-module-demo.gif)
 
 ###### (The polybar theme seen in the gif was modified from polybar-5 provided by [Aditya Shakya](https://github.com/adi1090x/polybar-themes) and originally designed by [Benedikt Vollmerhaus](https://gitlab.com/BVollmerhaus))
 
-### vpn support
-**The stock settings are intended for use with [Mullvad VPN](https://mullvad.net).**
-
-The module is scripted to facilitate other VPN's, but compatibility will depend on your VPN's API. See the `vpn_module.sh` script user settings to judge whether this code can easily be adapted for your choice of VPN.
+## supported VPNs
+polybar-vpn-controller is scripted to facilitate differing VPN's, but compatibility will depend on your VPN's API. **The stock settings are intended for use with [Mullvad VPN](https://mullvad.net).** See the `vpn_module.sh` script user settings to judge whether this code can easily be adapted for your choice of VPN.
 
 It'd be great to make this module more robust for other VPN's, so please contribute other setups. Thanks!
 
+## dependencies
+You need a VPN! 
+- `mullvad-vpn`, available in the [AUR](https://aur.archlinux.org/packages/mullvad-vpn/).
+- or, your own VPN (this will require reconfiguring vpn_module.sh)
 
-## dependencies (assuming Mullvad VPN):
-- `mullvad-vpn` (or `mullvad-vpn-cli`)
-
-Mullvad is available in the [AUR](https://aur.archlinux.org/packages/mullvad-vpn/). Use your own VPN otherwise and see configuration for setup details.
-
-### optional dependencies:
-- `rofi` 				  - allowser menu-based control of the VPN
-- `geoip` and `geoip-database` - together provide country info instead of public address
+### optional dependencies
+For menu:
+- `rofi` 				  - menu-based control of the VPN
+For geolocation:
+- `geoip` and `geoip-database` - provide country info instead of public IP address
 - `geoip-database-extra`  - also provides city info
 - `xclip`                 - allows copying ip address to clipboard
 
 The optional dependencies can be found in the [Arch Package Repository](https://www.archlinux.org/packages/).
 
-## configuration
+## install
 
-### polybar module
-
-This setup assumes that your `polybar` configuration is at `~/.config/polybar`.
+This setup assumes that your `polybar` configuration is at `~/.config/polybar`. To setup a VPN other than Mullvad, read the configuration tips in `vpn_module.sh`. Modify as necessary.
 
 ```
-[module/vpn]
-type = custom/script
-exec = $HOME/.config/polybar/scripts/vpn_module.sh
-click-left = $HOME/.config/polybar/scripts/vpn_module.sh --toggle-connection &
-click-right = $HOME/.config/polybar/scripts/vpn_module.sh --location-menu &
-click-middle = $HOME/.config/polybar/scripts/vpn_module.sh --ip_address &
-interval = 5
-format =  <label>
-format-background = ${color.mb}
-```
-
-### install
-
-To setup a VPN other than Mullvad, read the configuration tips in `vpn_module.sh`. Modify as necessary.
-
-```
+cd ~/.config/polybar
 git clone https://github.com/shervinsahba/polybar-vpn-controller.git
 cd polybar-vpn-controller
-cp fonts/* $HOME/.local/share/fonts/
-cp vpn_module.sh $HOME/.config/polybar/scripts/
+mkdir -p ~/.local/share/fonts
+cp fonts/* ~/.local/share/fonts/
 cat vpn_user_module >> $HOME/.config/polybar/user_modules.ini
 ```
-After installation add `vpn` to your `config.ini` modules.
 
-### issues
+After installation add the `vpn` module to your `config.ini` polybar.
 
-Using the default configuration provided with Mullvad (tested on Manjaro and Arch), the client will create two entries in system logs every couple of seconds, flooding them rather quickly.
-To fix this, follow [these](https://github.com/shervinsahba/polybar-vpn-controller/issues/6#issuecomment-669652829) instructions for a distro with `systemd`. With problems on non Arch-based distros, or systems without `systemd` for init, please open an issue.
+
+## known issues
+
+The Mullvad VPN client may create excessive entries in the system journal because of the way this script calls on it. To suppress these messages in your log, follow [these instructions](https://github.com/shervinsahba/polybar-vpn-controller/issues/6#issuecomment-669652829) for a distro with `systemd`. Tested on Manjaro and Arch.
