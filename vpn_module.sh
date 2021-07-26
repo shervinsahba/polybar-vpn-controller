@@ -54,12 +54,12 @@ COLOR_DISCONNECTED="#FF3300"
 VPN_LOCATIONS=("us sea" "us chi" "us nyc" "us" "jp" "au" "fr" "br")
 
 ## [Set optional rofi menu style]. `man rofi` for help.
-icon_connect=
-icon_fav=
-icon_country=
+icon_connect=⇋
+icon_fav=•
+icon_country=⚑
 rofi_font="icomoon-feather 15"
-rofi_theme="solarized_alternate"
-rofi_location="-location 5 -xoffset -200 -yoffset -50"
+#rofi_theme="-theme solarized_alternate"
+rofi_location="-location 3 -xoffset -530 -yoffset +30"
 rofi_menu_name="$VPN_PROVIDER VPN"
 
 
@@ -128,7 +128,7 @@ vpn_location_menu() {
 		## shellcheck throws errors here, but the globbing is intentional
 		# shellcheck disable=SC2086
 		MENU="$(rofi \
-			-font "$rofi_font" -theme "$rofi_theme" $rofi_location \
+			-font "$rofi_font" $rofi_theme $rofi_location \
 			-columns 1 -width 10 -hide-scrollbar \
 			-line-padding 4 -padding 20 -lines 9 \
 			-sep "|" -dmenu -i -p "$rofi_menu_name" <<< \
