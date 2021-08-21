@@ -30,11 +30,11 @@
 ## [Set VPN commands]. Setup for Mullvad is done below.
 # The first three commands should have direct equivalents for most VPNs.
 # The relay_set command assumes <country_code> <city_code> will follow as arguments. See below.
-VPN_PROVIDER="Mullvad"
-VPN_CONNECT="mullvad connect"
-VPN_DISCONNECT="mullvad disconnect"
-VPN_GET_STATUS="mullvad status"
-VPN_RELAY_SET_LOCATION="mullvad relay set location"
+VPN_PROVIDER="Nordvpn"
+VPN_CONNECT="nordvpn connect"
+VPN_DISCONNECT="nordvpn disconnect"
+VPN_GET_STATUS="nordvpn status"
+VPN_RELAY_SET_LOCATION="nordvpn relay set location"
 
 ## [Set VPN status parsing]
 # The first command cuts the status, which is compared to keywords below.
@@ -135,59 +135,59 @@ vpn_location_menu() {
 			" $icon_connect (dis)connect| $icon_fav ${VPN_LOCATIONS[0]}| $icon_fav ${VPN_LOCATIONS[1]}| $icon_fav ${VPN_LOCATIONS[2]}| $icon_fav ${VPN_LOCATIONS[3]}| $icon_fav ${VPN_LOCATIONS[4]}| $icon_fav ${VPN_LOCATIONS[5]}| $icon_fav ${VPN_LOCATIONS[6]}| $icon_fav ${VPN_LOCATIONS[7]}| $icon_country ${VPN_LOCATIONS[8]}| $icon_country ${VPN_LOCATIONS[9]}| $icon_country ${VPN_LOCATIONS[10]}| $icon_country ${VPN_LOCATIONS[11]}| $icon_country ${VPN_LOCATIONS[12]}| $icon_country ${VPN_LOCATIONS[13]}| $icon_country ${VPN_LOCATIONS[14]}| $icon_country ${VPN_LOCATIONS[15]}| $icon_country ${VPN_LOCATIONS[16]}| $icon_country ${VPN_LOCATIONS[17]}| $icon_country ${VPN_LOCATIONS[18]}| $icon_country ${VPN_LOCATIONS[19]}| $icon_country ${VPN_LOCATIONS[20]}| $icon_country ${VPN_LOCATIONS[21]}| $icon_country ${VPN_LOCATIONS[22]}| $icon_country ${VPN_LOCATIONS[23]}| $icon_country ${VPN_LOCATIONS[24]}| $icon_country ${VPN_LOCATIONS[25]}| $icon_country ${VPN_LOCATIONS[26]}| $icon_country ${VPN_LOCATIONS[27]}| $icon_country ${VPN_LOCATIONS[28]}| $icon_country ${VPN_LOCATIONS[29]}| $icon_country ${VPN_LOCATIONS[30]}| $icon_country ${VPN_LOCATIONS[31]}| $icon_country ${VPN_LOCATIONS[32]}| $icon_country ${VPN_LOCATIONS[33]}| $icon_country ${VPN_LOCATIONS[34]}| $icon_country ${VPN_LOCATIONS[35]}| $icon_country ${VPN_LOCATIONS[36]}| $icon_country ${VPN_LOCATIONS[37]}| $icon_country ${VPN_LOCATIONS[38]}| $icon_country ${VPN_LOCATIONS[39]}| $icon_country ${VPN_LOCATIONS[40]}| $icon_country ${VPN_LOCATIONS[41]}| $icon_country ${VPN_LOCATIONS[42]}| $icon_country ${VPN_LOCATIONS[43]}")"
 
 
+
+	    if [ "$VPN_STATUS" = "$CONNECTED" ]; then
+		$VPN_DISCONNECT
+	        return
+	    fi
+
 		# shellcheck disable=SC2086
 	    case "$MENU" in
 			*connect) vpn_toggle_connection; return;;
-			*"${VPN_LOCATIONS[0]}") $VPN_RELAY_SET_LOCATION ${VPN_CODES[0]} ;;
-			*"${VPN_LOCATIONS[1]}") $VPN_RELAY_SET_LOCATION ${VPN_CODES[1]} ;;
-			*"${VPN_LOCATIONS[2]}") $VPN_RELAY_SET_LOCATION ${VPN_CODES[2]} ;;
-			*"${VPN_LOCATIONS[3]}") $VPN_RELAY_SET_LOCATION ${VPN_CODES[3]} ;;
-			*"${VPN_LOCATIONS[4]}") $VPN_RELAY_SET_LOCATION ${VPN_CODES[4]} ;;
-			*"${VPN_LOCATIONS[5]}") $VPN_RELAY_SET_LOCATION ${VPN_CODES[5]} ;;
-			*"${VPN_LOCATIONS[6]}") $VPN_RELAY_SET_LOCATION ${VPN_CODES[6]} ;;
-			*"${VPN_LOCATIONS[7]}") $VPN_RELAY_SET_LOCATION ${VPN_CODES[7]} ;;
-			*"${VPN_LOCATIONS[8]}") $VPN_RELAY_SET_LOCATION ${VPN_CODES[8]} ;;
-			*"${VPN_LOCATIONS[9]}") $VPN_RELAY_SET_LOCATION ${VPN_CODES[9]} ;;
-			*"${VPN_LOCATIONS[10]}") $VPN_RELAY_SET_LOCATION "${VPN_CODES[10]}" ;;
-			*"${VPN_LOCATIONS[11]}") $VPN_RELAY_SET_LOCATION "${VPN_CODES[11]}" ;;
-			*"${VPN_LOCATIONS[12]}") $VPN_RELAY_SET_LOCATION "${VPN_CODES[12]}" ;;
-			*"${VPN_LOCATIONS[13]}") $VPN_RELAY_SET_LOCATION "${VPN_CODES[13]}" ;;
-			*"${VPN_LOCATIONS[14]}") $VPN_RELAY_SET_LOCATION "${VPN_CODES[14]}" ;;
-			*"${VPN_LOCATIONS[15]}") $VPN_RELAY_SET_LOCATION "${VPN_CODES[15]}" ;;
-			*"${VPN_LOCATIONS[16]}") $VPN_RELAY_SET_LOCATION "${VPN_CODES[16]}" ;;
-			*"${VPN_LOCATIONS[17]}") $VPN_RELAY_SET_LOCATION "${VPN_CODES[17]}" ;;
-			*"${VPN_LOCATIONS[18]}") $VPN_RELAY_SET_LOCATION "${VPN_CODES[18]}" ;;
-			*"${VPN_LOCATIONS[19]}") $VPN_RELAY_SET_LOCATION "${VPN_CODES[19]}" ;;
-			*"${VPN_LOCATIONS[20]}") $VPN_RELAY_SET_LOCATION "${VPN_CODES[20]}" ;;
-			*"${VPN_LOCATIONS[21]}") $VPN_RELAY_SET_LOCATION "${VPN_CODES[21]}" ;;
-			*"${VPN_LOCATIONS[22]}") $VPN_RELAY_SET_LOCATION "${VPN_CODES[22]}" ;;
-			*"${VPN_LOCATIONS[23]}") $VPN_RELAY_SET_LOCATION "${VPN_CODES[23]}" ;;
-			*"${VPN_LOCATIONS[24]}") $VPN_RELAY_SET_LOCATION "${VPN_CODES[24]}" ;;
-			*"${VPN_LOCATIONS[25]}") $VPN_RELAY_SET_LOCATION "${VPN_CODES[25]}" ;;
-			*"${VPN_LOCATIONS[26]}") $VPN_RELAY_SET_LOCATION "${VPN_CODES[26]}" ;;
-			*"${VPN_LOCATIONS[27]}") $VPN_RELAY_SET_LOCATION "${VPN_CODES[27]}" ;;
-			*"${VPN_LOCATIONS[28]}") $VPN_RELAY_SET_LOCATION "${VPN_CODES[28]}" ;;
-			*"${VPN_LOCATIONS[29]}") $VPN_RELAY_SET_LOCATION "${VPN_CODES[29]}" ;;
-			*"${VPN_LOCATIONS[30]}") $VPN_RELAY_SET_LOCATION "${VPN_CODES[30]}" ;;
-			*"${VPN_LOCATIONS[31]}") $VPN_RELAY_SET_LOCATION "${VPN_CODES[31]}" ;;
-			*"${VPN_LOCATIONS[32]}") $VPN_RELAY_SET_LOCATION "${VPN_CODES[32]}" ;;
-			*"${VPN_LOCATIONS[33]}") $VPN_RELAY_SET_LOCATION "${VPN_CODES[33]}" ;;
-			*"${VPN_LOCATIONS[34]}") $VPN_RELAY_SET_LOCATION "${VPN_CODES[34]}" ;;
-			*"${VPN_LOCATIONS[35]}") $VPN_RELAY_SET_LOCATION "${VPN_CODES[35]}" ;;
-			*"${VPN_LOCATIONS[36]}") $VPN_RELAY_SET_LOCATION "${VPN_CODES[36]}" ;;
-			*"${VPN_LOCATIONS[37]}") $VPN_RELAY_SET_LOCATION "${VPN_CODES[37]}" ;;
-			*"${VPN_LOCATIONS[38]}") $VPN_RELAY_SET_LOCATION "${VPN_CODES[38]}" ;;
-			*"${VPN_LOCATIONS[39]}") $VPN_RELAY_SET_LOCATION "${VPN_CODES[39]}" ;;
-			*"${VPN_LOCATIONS[40]}") $VPN_RELAY_SET_LOCATION "${VPN_CODES[40]}" ;;
-			*"${VPN_LOCATIONS[41]}") $VPN_RELAY_SET_LOCATION "${VPN_CODES[41]}" ;;
-			*"${VPN_LOCATIONS[42]}") $VPN_RELAY_SET_LOCATION "${VPN_CODES[42]}" ;;
+			*"${VPN_LOCATIONS[0]}") $VPN_CONNECT ${VPN_CODES[0]} ;;
+			*"${VPN_LOCATIONS[1]}") $VPN_CONNECT ${VPN_CODES[1]} ;;
+			*"${VPN_LOCATIONS[2]}") $VPN_CONNECT ${VPN_CODES[2]} ;;
+			*"${VPN_LOCATIONS[3]}") $VPN_CONNECT ${VPN_CODES[3]} ;;
+			*"${VPN_LOCATIONS[4]}") $VPN_CONNECT ${VPN_CODES[4]} ;;
+			*"${VPN_LOCATIONS[5]}") $VPN_CONNECT ${VPN_CODES[5]} ;;
+			*"${VPN_LOCATIONS[6]}") $VPN_CONNECT ${VPN_CODES[6]} ;;
+			*"${VPN_LOCATIONS[7]}") $VPN_CONNECT ${VPN_CODES[7]} ;;
+			*"${VPN_LOCATIONS[8]}") $VPN_CONNECT ${VPN_CODES[8]} ;;
+			*"${VPN_LOCATIONS[9]}") $VPN_CONNECT ${VPN_CODES[9]} ;;
+			*"${VPN_LOCATIONS[10]}") $VPN_CONNECT "${VPN_CODES[10]}" ;;
+			*"${VPN_LOCATIONS[11]}") $VPN_CONNECT "${VPN_CODES[11]}" ;;
+			*"${VPN_LOCATIONS[12]}") $VPN_CONNECT "${VPN_CODES[12]}" ;;
+			*"${VPN_LOCATIONS[13]}") $VPN_CONNECT "${VPN_CODES[13]}" ;;
+			*"${VPN_LOCATIONS[14]}") $VPN_CONNECT "${VPN_CODES[14]}" ;;
+			*"${VPN_LOCATIONS[15]}") $VPN_CONNECT "${VPN_CODES[15]}" ;;
+			*"${VPN_LOCATIONS[16]}") $VPN_CONNECT "${VPN_CODES[16]}" ;;
+			*"${VPN_LOCATIONS[17]}") $VPN_CONNECT "${VPN_CODES[17]}" ;;
+			*"${VPN_LOCATIONS[18]}") $VPN_CONNECT "${VPN_CODES[18]}" ;;
+			*"${VPN_LOCATIONS[19]}") $VPN_CONNECT "${VPN_CODES[19]}" ;;
+			*"${VPN_LOCATIONS[20]}") $VPN_CONNECT "${VPN_CODES[20]}" ;;
+			*"${VPN_LOCATIONS[21]}") $VPN_CONNECT "${VPN_CODES[21]}" ;;
+			*"${VPN_LOCATIONS[22]}") $VPN_CONNECT "${VPN_CODES[22]}" ;;
+			*"${VPN_LOCATIONS[23]}") $VPN_CONNECT "${VPN_CODES[23]}" ;;
+			*"${VPN_LOCATIONS[24]}") $VPN_CONNECT "${VPN_CODES[24]}" ;;
+			*"${VPN_LOCATIONS[25]}") $VPN_CONNECT "${VPN_CODES[25]}" ;;
+			*"${VPN_LOCATIONS[26]}") $VPN_CONNECT "${VPN_CODES[26]}" ;;
+			*"${VPN_LOCATIONS[27]}") $VPN_CONNECT "${VPN_CODES[27]}" ;;
+			*"${VPN_LOCATIONS[28]}") $VPN_CONNECT "${VPN_CODES[28]}" ;;
+			*"${VPN_LOCATIONS[29]}") $VPN_CONNECT "${VPN_CODES[29]}" ;;
+			*"${VPN_LOCATIONS[30]}") $VPN_CONNECT "${VPN_CODES[30]}" ;;
+			*"${VPN_LOCATIONS[31]}") $VPN_CONNECT "${VPN_CODES[31]}" ;;
+			*"${VPN_LOCATIONS[32]}") $VPN_CONNECT "${VPN_CODES[32]}" ;;
+			*"${VPN_LOCATIONS[33]}") $VPN_CONNECT "${VPN_CODES[33]}" ;;
+			*"${VPN_LOCATIONS[34]}") $VPN_CONNECT "${VPN_CODES[34]}" ;;
+			*"${VPN_LOCATIONS[35]}") $VPN_CONNECT "${VPN_CODES[35]}" ;;
+			*"${VPN_LOCATIONS[36]}") $VPN_CONNECT "${VPN_CODES[36]}" ;;
+			*"${VPN_LOCATIONS[37]}") $VPN_CONNECT "${VPN_CODES[37]}" ;;
+			*"${VPN_LOCATIONS[38]}") $VPN_CONNECT "${VPN_CODES[38]}" ;;
+			*"${VPN_LOCATIONS[39]}") $VPN_CONNECT "${VPN_CODES[39]}" ;;
+			*"${VPN_LOCATIONS[40]}") $VPN_CONNECT "${VPN_CODES[40]}" ;;
+			*"${VPN_LOCATIONS[41]}") $VPN_CONNECT "${VPN_CODES[41]}" ;;
+			*"${VPN_LOCATIONS[42]}") $VPN_CONNECT "${VPN_CODES[42]}" ;;
 	    esac
-
-	    if [ "$VPN_STATUS" = "$CONNECTED" ]; then
-	        return
-	    else
-	        $VPN_CONNECT
-	    fi
 	fi
 }
 
