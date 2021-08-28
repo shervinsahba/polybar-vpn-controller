@@ -86,22 +86,17 @@ ip_address_lookup() {
 	echo "$ip_address"
 }
 
+get_location() {
+        location=$(mullvad status -l | grep 'Location:' | cut -b 11-)
+        echo "$location"
+}
+
 
 vpn_report() {
 # continually reports connection status
 	if [ "$VPN_STATUS" = "$CONNECTED"  ]; then
-		if [ "$@" ] && [ "$1" == "--no-geoip" ]; then
-			country=$($VPN_GET_STATUS | awk 'tolower ($0) ~ /country/{print $2}')
-			city=$($VPN_GET_STATUS | awk 'tolower ($0) ~ /country/{print $2}')
-			echo " %{F$COLOR_CONNECTED}$city $country%{F-}"
-		elif hash geoiplookup 2>/dev/null; then
-			ip_address=$(ip_address_lookup)
-			country=$(geoiplookup "$ip_address" | head -n1 | cut -c24-25)
-			city=$(geoiplookup "$ip_address" | cut -d',' -f5 | sed -n '2{p;q}' | sed 's/^ //')
-			echo " %{F$COLOR_CONNECTED}$city $country%{F-}"
-		else
-			echo " %{F$COLOR_CONNECTED}$(ip_address_lookup)%{F-}"
-		fi
+            cityAndCountry=$(get_location)
+            echo " %{F$COLOR_CONNECTED}$cityAndCountry%{F-}"
 	elif [ "$VPN_STATUS" = "$CONNECTING" ]; then
 		echo " %{F$COLOR_CONNECTING}Connecting...%{F-}"
 	else
