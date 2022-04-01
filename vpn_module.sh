@@ -30,7 +30,6 @@
 ## [Set VPN commands]. Setup for Mullvad is done below.
 # The first three commands should have direct equivalents for most VPNs.
 # The relay_set command assumes <country_code> <city_code> will follow as arguments. See below.
-VPN_PROVIDER="Mullvad"
 VPN_CONNECT="mullvad connect"
 VPN_DISCONNECT="mullvad disconnect"
 VPN_GET_STATUS="mullvad status"
@@ -45,22 +44,23 @@ CONNECTED="connected"
 CONNECTING="connecting"
 
 ## [Set colors] (set each variable to nothing for default color)
-COLOR_CONNECTED="#00CC66"
-COLOR_CONNECTING="#FFFF00"
-COLOR_DISCONNECTED="#FF3300"
+ICON_CONNECTED=""
+ICON_CONNECTING="ﱱ"
+ICON_DISCONNECTED=""
+COLOR_CONNECTED="#a5fb8f"
+COLOR_CONNECTING="#FAE3B0"
+COLOR_DISCONNECTED="#f087bd"
 
 ## [Set 8 favorite VPN locations]
 # These are passed to your VPN as `$VPNCOMMAND_RELAY_SET_LOCATION <input>`.
 VPN_LOCATIONS=("us sea" "us chi" "us nyc" "us" "jp" "au" "fr" "br")
 
-## [Set optional rofi menu style]. `man rofi` for help.
-icon_connect=⇋
-icon_fav=•
-icon_country=⚑
-rofi_font="icomoon-feather 15"
-#rofi_theme="-theme solarized_alternate"
+## [Set optional rofi menu style]. `man rofi` for help on location params.
+icon_connect="⇋"
+icon_fav="•"
+icon_country="⚑"
 rofi_location="-location 3 -xoffset -530 -yoffset +30"
-rofi_menu_name="$VPN_PROVIDER VPN"
+rofi_menu_name="ﱾ VPN"
 
 
 ## @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -93,19 +93,20 @@ vpn_report() {
 		if [ "$@" ] && [ "$1" == "--no-geoip" ]; then
 			country=$($VPN_GET_STATUS | awk 'tolower ($0) ~ /country/{print $2}')
 			city=$($VPN_GET_STATUS | awk 'tolower ($0) ~ /country/{print $2}')
-			echo " %{F$COLOR_CONNECTED}$city $country%{F-}"
+			report="$city $country"
 		elif hash geoiplookup 2>/dev/null; then
 			ip_address=$(ip_address_lookup)
 			country=$(geoiplookup "$ip_address" | head -n1 | cut -c24-25)
 			city=$(geoiplookup "$ip_address" | cut -d',' -f5 | sed -n '2{p;q}' | sed 's/^ //')
-			echo " %{F$COLOR_CONNECTED}$city $country%{F-}"
+			report="$city $country"
 		else
-			echo " %{F$COLOR_CONNECTED}$(ip_address_lookup)%{F-}"
+			report=$(ip_address_lookup)
 		fi
+		echo "%{F$COLOR_CONNECTED}$ICON_CONNECTED $report%{F-}"
 	elif [ "$VPN_STATUS" = "$CONNECTING" ]; then
-		echo " %{F$COLOR_CONNECTING}Connecting...%{F-}"
+		echo "%{F$COLOR_CONNECTING}$ICON_CONNECTING Connecting...%{F-}"
 	else
-		echo " %{F$COLOR_DISCONNECTED}No VPN%{F-}"
+		echo "%{F$COLOR_DISCONNECTED}$ICON_DISCONNECTED No VPN%{F-}"
 	fi
 }
 
@@ -122,18 +123,11 @@ vpn_toggle_connection() {
 
 vpn_location_menu() {
 # Allows control of VPN via rofi menu. Selects from VPN_LOCATIONS.
-
 	if hash rofi 2>/dev/null; then
-
 		## shellcheck throws errors here, but the globbing is intentional
 		# shellcheck disable=SC2086
-		MENU="$(rofi \
-			-font "$rofi_font" $rofi_theme $rofi_location \
-			-columns 1 -width 10 -hide-scrollbar \
-			-line-padding 4 -padding 20 -lines 9 \
-			-sep "|" -dmenu -i -p "$rofi_menu_name" <<< \
+		MENU="$(rofi $rofi_location -sep "|" -dmenu -i -p "$rofi_menu_name" <<< \
 			" $icon_connect (dis)connect| $icon_fav ${VPN_LOCATIONS[0]}| $icon_fav ${VPN_LOCATIONS[1]}| $icon_fav ${VPN_LOCATIONS[2]}| $icon_fav ${VPN_LOCATIONS[3]}| $icon_fav ${VPN_LOCATIONS[4]}| $icon_fav ${VPN_LOCATIONS[5]}| $icon_fav ${VPN_LOCATIONS[6]}| $icon_fav ${VPN_LOCATIONS[7]}| $icon_country ${VPN_LOCATIONS[8]}| $icon_country ${VPN_LOCATIONS[9]}| $icon_country ${VPN_LOCATIONS[10]}| $icon_country ${VPN_LOCATIONS[11]}| $icon_country ${VPN_LOCATIONS[12]}| $icon_country ${VPN_LOCATIONS[13]}| $icon_country ${VPN_LOCATIONS[14]}| $icon_country ${VPN_LOCATIONS[15]}| $icon_country ${VPN_LOCATIONS[16]}| $icon_country ${VPN_LOCATIONS[17]}| $icon_country ${VPN_LOCATIONS[18]}| $icon_country ${VPN_LOCATIONS[19]}| $icon_country ${VPN_LOCATIONS[20]}| $icon_country ${VPN_LOCATIONS[21]}| $icon_country ${VPN_LOCATIONS[22]}| $icon_country ${VPN_LOCATIONS[23]}| $icon_country ${VPN_LOCATIONS[24]}| $icon_country ${VPN_LOCATIONS[25]}| $icon_country ${VPN_LOCATIONS[26]}| $icon_country ${VPN_LOCATIONS[27]}| $icon_country ${VPN_LOCATIONS[28]}| $icon_country ${VPN_LOCATIONS[29]}| $icon_country ${VPN_LOCATIONS[30]}| $icon_country ${VPN_LOCATIONS[31]}| $icon_country ${VPN_LOCATIONS[32]}| $icon_country ${VPN_LOCATIONS[33]}| $icon_country ${VPN_LOCATIONS[34]}| $icon_country ${VPN_LOCATIONS[35]}| $icon_country ${VPN_LOCATIONS[36]}| $icon_country ${VPN_LOCATIONS[37]}| $icon_country ${VPN_LOCATIONS[38]}| $icon_country ${VPN_LOCATIONS[39]}| $icon_country ${VPN_LOCATIONS[40]}| $icon_country ${VPN_LOCATIONS[41]}| $icon_country ${VPN_LOCATIONS[42]}| $icon_country ${VPN_LOCATIONS[43]}")"
-
 
 		# shellcheck disable=SC2086
 	    case "$MENU" in
@@ -201,9 +195,9 @@ ip_address_to_clipboard() {
 
 # cases for polybar user_module.ini
 case "$1" in
-	--toggle-connection) vpn_toggle_connection ;;
-	--location-menu) vpn_location_menu ;;
-	--ip-address) ip_address_to_clipboard ;;
-	--no-geoip) vpn_report --no-geoip ;;
+	-t|--toggle-connection) vpn_toggle_connection ;;
+	-l|--location-menu) vpn_location_menu ;;
+	-i|--ip-address) ip_address_to_clipboard ;;
+	-n|--no-geoip) vpn_report --no-geoip ;;
 	*) vpn_report ;;
 esac
