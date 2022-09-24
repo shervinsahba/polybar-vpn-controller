@@ -1,0 +1,28 @@
+#!/bin/bash
+
+DIRNAME="$(dirname "$(realpath "$0")")"
+
+## fetch all relay locations
+mullvad relay list | awk '!/^\t\t.*$/' | awk '/./' | sed 's/ @.*//g' | sed 's/^\t/ • /g' > "$DIRNAME"/locations
+
+## strip out the relay codes
+awk '{print (substr($0,length($0)-3,3))}' "$DIRNAME"/locations | sed 's/(//g' > "$DIRNAME"/codes.tmp
+
+## arrange codes as "<country>" or "<country> <city>"
+if [[ -f "$DIRNAME"/codes ]]; then
+    rm "$DIRNAME"/codes
+fi
+while read -r line; do
+    if [[ ${#line} = 2 ]]; then
+        country=$line 
+        echo "$country" >> "$DIRNAME"/codes
+    else
+        echo "$country" "$line" >> "$DIRNAME"/codes
+    fi
+done < "$DIRNAME"/codes.tmp
+rm "$DIRNAME"/codes.tmp
+
+
+## create rofi menu
+echo " dis/connect" > "$DIRNAME"/menu
+cat "$DIRNAME"/locations >> "$DIRNAME"/menu
