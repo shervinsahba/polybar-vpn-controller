@@ -3,7 +3,7 @@
 DIRNAME="$(dirname "$(realpath "$0")")"
 
 ## fetch all relay locations
-mullvad relay list | awk '!/^\t\t.*$/' | awk '/./' | sed 's/ @.*//g' | sed 's/^\t/ • /g' > "$DIRNAME"/locations
+mullvad relay list | awk '!/^\t\t.*$/' | awk '/./' | sed 's/ @.*//g' | sed 's/^\t/ ∙ /g' > "$DIRNAME"/locations
 
 ## strip out the relay codes
 awk '{print (substr($0,length($0)-3,3))}' "$DIRNAME"/locations | sed 's/(//g' > "$DIRNAME"/codes.tmp
@@ -24,5 +24,5 @@ rm "$DIRNAME"/codes.tmp
 
 
 ## create rofi menu
-echo " dis/connect" > "$DIRNAME"/menu
+echo " ⇋  dis/connect" > "$DIRNAME"/menu
 cat "$DIRNAME"/locations >> "$DIRNAME"/menu
