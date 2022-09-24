@@ -9,10 +9,6 @@
 ##  The stock setup was designed with Mullvad VPN in mind, though the code
 ##  was left somewhat generic to extend usage to other VPNs.
 
-## 	vpn_user_module: this file can be appended to your polybar module definitions
-##  to report your VPN's status as one of [<location> | <ip_address> | connecting... | No VPN ].
-##  Interact with the module via left-clicks to toggle VPN, middle-click to copy your IP, and right-click to get a menu.
-
 ##	dependencies:
 ##		mullvad-vpn           - this script assumes you use Mullvad, but may work for others with slight changes
 ##		rofi				  - allows menu based control
@@ -24,8 +20,9 @@
 ##      xclip                 - allows copying ip address to clipboard
 
 ## polybar setup:
-## - Append contents of vpn_user_module file to modules.ini or user_modules.ini
+## - Append contents of the polybar_module_definition file to modules.ini or user_modules.ini
 ## - Add "vpn" module to your config.ini under modules
+## Interact with the module via left-clicks to toggle VPN, middle-click to copy your IP, and right-click     to get a menu.
 
 
 ## @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@

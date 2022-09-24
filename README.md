@@ -2,7 +2,7 @@
 
 Manage your VPN via this module. The `vpn_module` reports the VPN's status in one of three states: `[<location> | Connecting... | No VPN ]`, where the location is your <city> <country> or public IP address. It also provides the ability to toggle the VPN connection, open a rofi menu with VPN locations to set, and copy your public ip to the clipboard.
 
-The `vpn_user_module` file can be appended to your polybar module definitions, adding the `vpn` module with these preset capabilities:
+The `polybar_module_definition` file can be appended to your polybar module definitions, adding the `vpn` module with these preset capabilities:
 - left-click: connect and disconnect VPN
 - right-click: open rofi menu to select between locations
 - middle-click: copy your public IP address to the clipboard
@@ -13,7 +13,7 @@ The `vpn_user_module` file can be appended to your polybar module definitions, a
 
 ## changelog
 2022-09-23 Overhauled the package...
- - Renamed  utility from `vpn_module.sh` to the more modern `vpn_module`. Several command calls have changed. See the usage section below or run `vpn_module help`. You can probably just re-clone the package and re-copy the new `vpn_user_module`. The previous version is left under the branch `old-master`.
+ - Renamed  utility from `vpn_module.sh` to the more modern `vpn_module`. Several command calls have changed. See the usage section below or run `vpn_module help`. You can probably just re-clone the package and re-copy the new `polybar_module_definition`. The previous version is left under the branch `old-master`.
  - Added city level VPN locations! You can now select ANY of mullvad's relays through the rofi menu!
  - Replaced all the hard-coded VPN locations and rofi menu scripting with more extensible, dynamic scripting. The script now relies on a the mullvad directory, which contains VPN locations and their relay codes. Notably, the data files in this directory are all updated by running the `update_mullvad_relays` script.
  - Removed the favorite VPN array for now.
@@ -46,7 +46,7 @@ cd ~/.config/polybar
 git clone https://github.com/shervinsahba/polybar-vpn-controller.git
 cd polybar-vpn-controller
 ./mullvad/update_mullvad_relays
-cat vpn_user_module >> ~/.config/polybar/user_modules.ini
+cat polybar_module_definition >> ~/.config/polybar/user_modules.ini
 ```
 
 Now add the `vpn` module to your polybar's `config` or `config.ini`.
