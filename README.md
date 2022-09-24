@@ -12,6 +12,9 @@ The `polybar_module_definition` file can be appended to your polybar module defi
 ###### (Note: This gif is from an older version. The polybar theme seen in the gif was modified from polybar-5 provided by [Aditya Shakya](https://github.com/adi1090x/polybar-themes) and originally designed by [Benedikt Vollmerhaus](https://gitlab.com/BVollmerhaus))
 
 ## changelog
+2022-09-24 Reimplemented favorite VPN location arrays.
+ - You can once again set favorite VPN locations. Edit the `./mullvad/update_mullvad_relays` script, and look for the user favorite arrays.
+  
 2022-09-23 Overhauled the package...
  - Renamed  utility from `vpn_module.sh` to the more modern `vpn_module`. Several command calls have changed. See the usage section below or run `vpn_module help`. You can probably just re-clone the package and re-copy the new `polybar_module_definition`. The previous version is left under the branch `old-master`.
  - Added city level VPN locations! You can now select ANY of mullvad's relays through the rofi menu!
