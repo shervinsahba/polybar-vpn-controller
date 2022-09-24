@@ -1,17 +1,42 @@
 #!/bin/bash
+## update_mullvad_relays: generates VPN location descriptions and relay code files, fetching most recent data from mullvad.
 
+# get directory of this script, so that files are written to the correct location
 DIRNAME="$(dirname "$(realpath "$0")")"
 
-## fetch all relay locations
-mullvad relay list | awk '!/^\t\t.*$/' | awk '/./' | sed 's/ @.*//g' | sed 's/^\t/ ∙ /g' > "$DIRNAME"/locations
-
-## strip out the relay codes
-awk '{print (substr($0,length($0)-3,3))}' "$DIRNAME"/locations | sed 's/(//g' > "$DIRNAME"/codes.tmp
-
-## arrange codes as "<country>" or "<country> <city>"
+# purge old files
 if [[ -f "$DIRNAME"/codes ]]; then
     rm "$DIRNAME"/codes
 fi
+if [[ -f "$DIRNAME"/locations ]]; then
+    rm "$DIRNAME"/locations
+fi
+
+# add your favorite locations and their relay codes
+# Example:
+#   user_fav_locations=("✯ Seattle" "✯ Chicago" "✯ The Big Apple")
+#   user_fav_codes=("us sea" "us chi" "us nyc")
+# Leave blank for no favorites.
+
+user_fav_locations=()  # SET THIS! Create an array of names, whatever you choose.
+user_fav_codes=()      # SET THIS! Put in the matching mullvad relay codes here.
+
+if ! [ "${#user_fav_locations[@]}" -eq 0 ] && [ "${#user_fav_codes[@]}" -eq "${#user_fav_locations[@]}" ] ; then
+    for x in "${user_fav_locations[@]}"; do
+        echo "$x" >> "$DIRNAME"/locations
+    done
+    for x in "${user_fav_codes[@]}"; do
+        echo "$x" >> "$DIRNAME"/codes
+    done
+fi
+
+# create relay locations file, formatting cities with a bullet point for visual clarity
+mullvad relay list | awk '!/^\t\t.*$/' | awk '/./' | sed 's/ @.*//g' | sed 's/^\t/ ∙ /g' >> "$DIRNAME"/locations
+
+# strip out the relay codes
+awk '{print (substr($0,length($0)-3,3))}' "$DIRNAME"/locations | sed 's/(//g' >> "$DIRNAME"/codes.tmp
+
+# create codes file with "<country>" or "<country> <city>" relay code matching locations
 while read -r line; do
     if [[ ${#line} = 2 ]]; then
         country=$line 
@@ -22,7 +47,7 @@ while read -r line; do
 done < "$DIRNAME"/codes.tmp
 rm "$DIRNAME"/codes.tmp
 
-
-## create rofi menu
-echo " ⇋  dis/connect" > "$DIRNAME"/menu
+# create rofi menu file. 
+# this is more or less the locations file, but provides the opportunity to add or change a few things.
+echo "⇋  dis/connect" > "$DIRNAME"/menu
 cat "$DIRNAME"/locations >> "$DIRNAME"/menu
