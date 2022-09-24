@@ -24,7 +24,7 @@
 ##      xclip                 - allows copying ip address to clipboard
 
 ## polybar setup:
-## - Append contents of vpn_user_module file to user_modules.ini
+## - Append contents of vpn_user_module file to modules.ini or user_modules.ini
 ## - Add "vpn" module to your config.ini under modules
 
 
@@ -48,7 +48,7 @@ CONNECTED="connected"
 CONNECTING="connecting"
 
 ## [Set colors] (set each variable to nothing for default color)
-# Icons glyphs should be compatible with most Nerd Fonts (https://www.nerdfonts.com/cheat-sheet)
+# Icons glyphs should be given by most Nerd Fonts (https://www.nerdfonts.com/cheat-sheet)
 ICON_CONNECTED=""
 ICON_CONNECTING="ﱱ"
 ICON_DISCONNECTED=""
