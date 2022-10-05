@@ -21,7 +21,8 @@ fi
 user_fav_locations=()  # SET THIS! Create an array of names, whatever you choose.
 user_fav_codes=()      # SET THIS! Put in the matching mullvad relay codes here.
 
-if ! [ "${#user_fav_locations[@]}" -eq 0 ] && [ "${#user_fav_codes[@]}" -eq "${#user_fav_locations[@]}" ] ; then
+# if fav locations and codes are set, then append them into the beginning of the locations and codes file
+if [[ "${#user_fav_locations[@]}" -ne 0 ]] && [[ "${#user_fav_codes[@]}" -eq "${#user_fav_locations[@]}" ]] ; then
     for x in "${user_fav_locations[@]}"; do
         echo "$x" >> "$DIRNAME"/locations
     done
