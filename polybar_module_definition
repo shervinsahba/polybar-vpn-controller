@@ -3,7 +3,7 @@
 ; click-right: opens rofi menu for VPN control
 ; click-middle: copies IP address to clipboard
 type = custom/script
-exec = "if hash mullvad &>/dev/null; then ~/.config/polybar/polybar-vpn-controller/vpn_module status mullvad; fi
+exec = "if hash mullvad &>/dev/null; then ~/.config/polybar/polybar-vpn-controller/vpn_module status mullvad; fi"
 click-left = ~/.config/polybar/polybar-vpn-controller/vpn_module toggle &
 click-right = ~/.config/polybar/polybar-vpn-controller/vpn_module menu &
 click-middle = ~/.config/polybar/polybar-vpn-controller/vpn_module ip-clip &
